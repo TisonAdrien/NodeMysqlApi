@@ -116,7 +116,7 @@ JSON Object example :
 }
 ```
 
-### Request DELETE '/'
+### Request PUT '/delete'
 
 // TODO
 

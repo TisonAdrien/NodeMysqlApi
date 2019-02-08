@@ -36,7 +36,7 @@ app.put('/', function(req, res) {
  * Path delete: delete object.table elements
  * filters: object.fields, object.values
  */
-app.delete('/', function(req, res) {
+app.put('/delete', function(req, res) {
 	crud.delete(req.body, res);
 });
 
