@@ -14,7 +14,7 @@ The project is based on NodeJS then you have to install it.
 
 First step : Install the project and install dependencies.
 
-```
+``` bash
 # install project
 npm install git+https://github.com/TisonAdrien/NodeMysqlApi.git
 
@@ -26,7 +26,7 @@ npm install
 ```
 
 Second step : configure your database profile in .env
-```
+``` bash
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_DATABASE=database
@@ -38,7 +38,7 @@ APP_PORT=3000
 
 ### Runing
 
-```
+``` bash
 # Start the server
 npm start
 ```
