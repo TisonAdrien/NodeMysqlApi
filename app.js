@@ -34,7 +34,7 @@ app.put('/', function(req, res) {
 
 /**
  * Path delete: delete object.table elements
- * filters: object.fields, object.values
+ * filters: object.where
  */
 app.put('/delete', function(req, res) {
 	crud.delete(req.body, res);

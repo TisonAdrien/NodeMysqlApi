@@ -51,8 +51,6 @@ Then go to [your website](http://localhost:3000)
 
 ### Request POST '/add'
 
-// TODO
-
 Create a new Entity
 
 All fields are required.
@@ -94,8 +92,6 @@ JSON Object example :
 
 ### Request PUT '/'
 
-// TODO
-
 Update an Entity
 
 All fields are required except object.where.
@@ -118,8 +114,6 @@ JSON Object example :
 
 ### Request PUT '/delete'
 
-// TODO
-
 Delete an Entity
 
 object.table is required.
@@ -128,14 +122,7 @@ JSON Object example
 ```json
 {
 	"table": "TABLE_NAME",
-	"fields": [
-		"FIELD_1", 
-		"FIELD_2"
-	],
-	"values": [
-		"VALUE_1", 
-		"VALUE_2"
-	]
+	"where": "FIELD_1 = 'VALUE_1'"
 }
 ```
 
