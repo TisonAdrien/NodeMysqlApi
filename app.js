@@ -26,7 +26,7 @@ app.post('/', function(req, res) {
 
 /**
  * Path update: update object.table elements
- * filters: object.fields, object.values, object.where, object.order, object.group
+ * filters: object.fields, object.values, object.where
  */
 app.put('/', function(req, res) {
 	crud.update(req.body, res);
