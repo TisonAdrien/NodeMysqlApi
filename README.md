@@ -34,7 +34,21 @@ DB_USER=root
 DB_PASSWORD=root
 
 APP_PORT=3000
+
+APP_USE_AUTH=1
+APP_AUTH_SECRET=YOUR APP SECRET KEY
+APP_AUTH_FIELDS=username,password
+APP_AUTH_TABLE=user
+APP_TOKEN_EXPIRES=86400
 ```
+
+APP_USE_AUTH is to use authentication for your API, if you want to use authentication set t to 1.
+APP_AUTH_SECRET is a simple key to hash the tokens
+APP_AUTH_FIELDS is the fields to check when you use authentication (For example: username and password)
+APP_AUTH_TABLE is the table where are the fields to use with authentication (Example: user)
+APP_TOKEN_EXPIRES is the duration time of your token here 86400 : 24 hours
+
+> If you don't want to use Authenticate, please set the variable APP_USE_AUTH to 0 in .env file
 
 ### Runing
 
@@ -48,6 +62,39 @@ Then go to [your website](http://localhost:3000)
 ## How to use
 
 > All request want a JSON object to be used
+
+### Request POST '/authenticate'
+
+Authenticate current user
+
+object.values is required.
+
+JSON Object example :
+```json
+{
+	"values": [
+		"ADMIN",
+		"ROOT"
+	]
+}
+```
+
+Here, the API check on the table APP_AUTH_TABLE if the fields APP_AUTH_FIELDS correspond to values in JSON object :
+
+Is a 'user' have their fields 'username' = 'ADMIN' and 'password' = 'ROOT'.
+
+You can use how many fields you want but just on one table !
+
+The api send to you a token, use it for the others requests in the HEADERS of your requests with the name 'token'
+
+Example :
+
+Request POST '/' + HEADERS 'token' = 'YOUR_TOKEN'
+
+Else you received a Code 500 Error.
+
+> If you don't want to use Authenticate, please set the variable APP_USE_AUTH to 0 in .env file
+
 
 ### Request POST '/add'
 

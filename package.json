@@ -11,6 +11,7 @@
     "body-parser": "latest",
     "express": "latest",
     "mysql": "latest",
-    "dotenv": "latest"
+    "dotenv": "latest",
+    "jsonwebtoken": "latest"
   }
 }
