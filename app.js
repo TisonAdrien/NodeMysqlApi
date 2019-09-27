@@ -37,15 +37,6 @@ require('fs').readdirSync(normalizedPath).forEach( function (file) {
   models.push(model);
 });
 
-/**
- * Path free: using query without filter directly
- * require: object.query
- */
-/* app.post('/free', function(req, res) {
-	verifyAuth(req, res, function(req, res) {
-		crud.free(req.body, res);
-	});
-}); */
 
 /**
  * Launch server

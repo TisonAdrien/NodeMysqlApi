@@ -120,6 +120,7 @@ initCustom() {
 	 this.app.post('/' + this.tableName + '/custom', (function(req, res) {
 		 req.body.table = this.tableName;
 		 req.body.hiddenFields = this.hiddenFields;
+		 req.body.query = 'SELECT * FROM `' + this.tableName + '` WHERE custom = ' + req.body.custom;
 		 this.verifyAuth(req, res, function(req, res, user) {
 			 this.crud.free(req.body, res);
 		 });
@@ -232,18 +233,6 @@ JSON Object example
 }
 ```
 
-### Request POST '/:modelName/free'
-
-Query what you want
-
-object.query is required.
-
-JSON Object example
-```
-{
-	"query": "SELECT * FROM TABLE_NAME"
-}
-```
 
 ## Author
 
