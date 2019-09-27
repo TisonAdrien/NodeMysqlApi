@@ -37,14 +37,16 @@ APP_PORT=3000
 
 APP_USE_AUTH=1
 APP_AUTH_SECRET=YOUR APP SECRET KEY
-APP_AUTH_FIELDS=username,password
+APP_AUTH_FIELDS=username
+APP_AUTH_FIELDS_HASH=password
 APP_AUTH_TABLE=user
 APP_TOKEN_EXPIRES=86400
 ```
 
 APP_USE_AUTH is to use authentication for your API, if you want to use authentication set t to 1.
 APP_AUTH_SECRET is a simple key to hash the tokens
-APP_AUTH_FIELDS is the fields to check when you use authentication (For example: username and password)
+APP_AUTH_FIELDS is the fields to check when you use authentication (For example: username)
+APP_AUTH_FIELDS_HASH is the fields hashed in the database with MD5() method to check when you use authentication (For example: password)
 APP_AUTH_TABLE is the table where are the fields to use with authentication (Example: user)
 APP_TOKEN_EXPIRES is the duration time of your token here 86400 : 24 hours
 
@@ -60,6 +62,70 @@ npm start
 Then go to [your website](http://localhost:3000)
 
 ## How to use
+
+### Model based API
+
+To add routes in your API, you need to create a model like /models/user.model.js and extends BaseModel.
+
+Property tableName need to be defined before call init function.
+
+You can easily modulate your model with 2 variables : requireAuth and hiddenFields;
+
+```js
+this.requireAuth = {
+	'GET': false,
+	'POST': true,
+	'PUT': true,
+	'DELETE': true
+};
+this.hiddenFields = [ 'password' ];
+```
+
+The variable requireAuth check for each method (GET, POST, PUT, DELETE) if authentication is required, and stop the query if the user isn't authentified.
+
+The variable hiddenFields return for each fields the value '[HIDDEN]', if you don't want some hacker see your data.
+
+If your model is more difficult, you can use different hook :
+```js
+beforePost(req, user) {
+	/* Here you can change the POST request before call */
+	return req;
+}
+
+beforeGet(req, user) {
+	/* Here you can change the GET request before call */
+	return req;
+}
+
+beforePut(req, user) {
+	/* Here you can change the PUT request before call */
+	return req;
+}
+
+beforeDelete(req, user) {
+	/* Here you can change the DELETE request before call */
+	return req;
+}
+```
+
+For each function, you have access to the user authentified (null if no auth required) and the current request.
+You have to do your job here and return the request updated.
+
+And finaly you have the possibility to add custom routes with :
+```js
+initCustom() {
+	/**
+	 * Path custom: do something with crud or not
+	 */
+	 this.app.post('/' + this.tableName + '/custom', (function(req, res) {
+		 req.body.table = this.tableName;
+		 req.body.hiddenFields = this.hiddenFields;
+		 this.verifyAuth(req, res, function(req, res, user) {
+			 this.crud.free(req.body, res);
+		 });
+	 }).bind(this));
+}
+```
 
 > All request want a JSON object to be used
 
@@ -95,8 +161,7 @@ Else you received a Code 500 Error.
 
 > If you don't want to use Authenticate, please set the variable APP_USE_AUTH to 0 in .env file
 
-
-### Request POST '/add'
+### Request POST '/:modelName/add'
 
 Create a new Entity
 
@@ -105,28 +170,24 @@ All fields are required.
 JSON Object example :
 ```json
 {
-	"table": "TABLE_NAME",
 	"fields": [
-		"FIELD_1", 
+		"FIELD_1",
 		"FIELD_2"
 	],
 	"values": [
-		"VALUE_1", 
+		"VALUE_1",
 		"VALUE_2"
 	]
 }
 ```
 
-### Request POST '/'
+### Request POST '/:modelName'
 
 Get an Entity
-
-object.table is required.
 
 JSON Object example :
 ```json
 {
-	"table": "TABLE_NAME",
 	"fields": [
 		"FIELD_1",
 		"FIELD_2"
@@ -137,7 +198,7 @@ JSON Object example :
 }
 ```
 
-### Request PUT '/'
+### Request PUT '/:modelName'
 
 Update an Entity
 
@@ -146,20 +207,19 @@ All fields are required except object.where.
 JSON Object example :
 ```json
 {
-	"table": "TABLE_NAME",
 	"fields": [
-		"FIELD_1", 
+		"FIELD_1",
 		"FIELD_2"
 	],
 	"values": [
-		"VALUE_1", 
+		"VALUE_1",
 		"VALUE_2"
 	],
 	"where": "FIELD_1 = 'VALUE_1'"
 }
 ```
 
-### Request PUT '/delete'
+### Request PUT '/:modelName/delete'
 
 Delete an Entity
 
@@ -168,12 +228,11 @@ object.table is required.
 JSON Object example
 ```json
 {
-	"table": "TABLE_NAME",
 	"where": "FIELD_1 = 'VALUE_1'"
 }
 ```
 
-### Request POST '/free'
+### Request POST '/:modelName/free'
 
 Query what you want
 

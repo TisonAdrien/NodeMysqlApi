@@ -5,7 +5,8 @@
   "description": "Node api with mysql database",
   "author": "A. Tison <tison.adrien.pro@gmail.com>",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "serve": "nodemon app.js"
   },
   "dependencies": {
     "body-parser": "latest",
